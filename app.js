@@ -1,9 +1,3 @@
-if ('showTrigger' in Notification.prototype) {
-  /* Notification Triggers supported */
-  console.log('START');
-  createScheduledNotification('001', 'BANANA', Date.now());
-}
-
 const createScheduledNotification = (tag, title, timestamp) => {
   return navigator.serviceWorker.getRegistration().then((registration) =>
     registration.showNotification(title, {
@@ -27,3 +21,9 @@ const cancelScheduledNotification = (tag) => {
       notifications.forEach((notification) => notification.close());
     });
 };
+
+if ('showTrigger' in Notification.prototype) {
+  /* Notification Triggers supported */
+  console.log('START');
+  createScheduledNotification('001', 'BANANA', Date.now());
+}
