@@ -1,0 +1,35 @@
+@font-face {
+  font-family: 'Gilroy';
+  font-weight: 700;
+  src: url('assets/fonts/Gilroy-ExtraBold.woff') format('woff'),
+    url('assets/fonts/Gilroy-ExtraBold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  font-weight: 100;
+  src: url('assets/fonts/Gilroy-Light.woff') format('woff'),
+    url('assets/fonts/Gilroy-Light.ttf') format('truetype');
+}
+
+* {
+  font-family: 'Gilroy', -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica,
+    Arial, sans-serif;
+  font-weight: 700;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0 auto;
+  color: #fff;
+  background-color: #000;
+}
+
+a {
+  color: inherit;
+}
