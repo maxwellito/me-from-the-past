@@ -25,5 +25,22 @@ const cancelScheduledNotification = (tag) => {
 if ('showTrigger' in Notification.prototype) {
   /* Notification Triggers supported */
   console.log('START');
-  createScheduledNotification('001', 'BANANA', Date.now());
+  navigator.permissions
+    .query({ name: 'notifications' })
+    .then(({ state }) => {
+      if (state === 'prompt') {
+        return Notification.requestPermission();
+      }
+    })
+    .then(() => navigator.permissions.query({ name: 'notifications' }))
+    .then(({ state }) => {
+      if (state !== 'granted') {
+        alert(
+          'You need to grant notifications permission for this demo to work.'
+        );
+        throw new Error('Authorisation failed');
+      }
+      createScheduledNotification('001', 'BANANA', Date.now());
+    })
+    .catch(console.warn);
 }
