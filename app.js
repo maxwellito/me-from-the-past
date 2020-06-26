@@ -44,7 +44,11 @@ function start() {
     .catch(console.warn);
 }
 
-if ('showTrigger' in Notification.prototype) {
+if ('showTrigger' in Notification.prototype && 'serviceWorker' in navigator) {
+  // Set up service worker
+  // navigator.serviceWorker.register('service-worker.js', {scope: '.'});
+  navigator.serviceWorker.register('dummy-service-worker.js');
+
   /* Notification Triggers supported */
   const b = document.createElement('p');
   b.innerText = 'START';
