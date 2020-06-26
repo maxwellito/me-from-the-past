@@ -28,8 +28,36 @@ body {
   margin: 0 auto;
   color: #fff;
   background-color: #000;
+  max-width: 480px;
+  padding: 0 1em;
 }
 
 a {
   color: inherit;
+}
+
+/* Types */
+
+.fullmsg {
+  font-size: 4rem;
+  line-height: 1;
+  padding-top: 1em;
+}
+
+/* Mixin classes */
+
+.reveal {
+  position: relative;
+  animation: 1s reveal;
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    top: 1em;
+  }
+  to {
+    opacity: 1;
+    top: 0;
+  }
 }

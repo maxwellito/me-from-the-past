@@ -22,8 +22,7 @@ const cancelScheduledNotification = (tag) => {
     });
 };
 
-if ('showTrigger' in Notification.prototype) {
-  /* Notification Triggers supported */
+function start() {
   console.log('START');
   navigator.permissions
     .query({ name: 'notifications' })
@@ -43,4 +42,18 @@ if ('showTrigger' in Notification.prototype) {
       createScheduledNotification('001', 'BANANA', Date.now());
     })
     .catch(console.warn);
+}
+
+if ('showTrigger' in Notification.prototype) {
+  /* Notification Triggers supported */
+  const b = document.createElement('p');
+  b.innerText = 'START';
+  b.onclick = start;
+  document.body.appendChild(b);
+} else {
+  // Not compatible browser
+  const p = document.createElement('p');
+  p.classList.add('fullmsg', 'reveal');
+  p.innerHTML = "Sorry,<br />but your browser isn't compatible.";
+  document.body.appendChild(p);
 }
