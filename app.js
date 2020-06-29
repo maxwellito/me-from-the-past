@@ -149,19 +149,7 @@ function switchView(viewName) {
 function main() {
   document.getElementById('main').style.display = 'inherit';
   switchView('create');
-  navigator.permissions.query({ name: 'notifications' }).then(({ state }) => {
-    if (state === 'granted') {
-      //
-
-      permissionGranted();
-    } else {
-      /* Notification Triggers supported */
-      const b = document.createElement('p');
-      b.innerText = 'START';
-      b.onclick = start;
-      document.body.appendChild(b);
-    }
-  });
+  permissionGranted();
 }
 
 if ('showTrigger' in Notification.prototype && 'serviceWorker' in navigator) {
