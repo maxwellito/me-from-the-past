@@ -98,7 +98,6 @@ function refreshHistoryList() {
           : firstFutureNotifIndex;
       const pastNotifs = notifs.slice(0, firstFutureNotifIndex);
       const futureNotifs = notifs.slice(firstFutureNotifIndex);
-      debugger;
 
       const limiter = document.createElement('fieldset');
       limiter.classList.add('delimiter');
