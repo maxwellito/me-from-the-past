@@ -20,16 +20,18 @@ const createScheduledNotification = () => {
     return;
   }
 
-  return navigator.serviceWorker.getRegistration().then((registration) => {
-    registration.showNotification(`Message from ${timerHuman} ago`, {
-      tag: `${+now}_txt`,
-      body: msg,
-      showTrigger: new TimestampTrigger(+now + timer * 60000),
+  return start()
+    .then(() => navigator.serviceWorker.getRegistration())
+    .then((registration) => {
+      registration.showNotification(`Message from ${timerHuman} ago`, {
+        tag: `${+now}_txt`,
+        body: msg,
+        showTrigger: new TimestampTrigger(+now + timer * 60000),
+      });
+      alert(`The future you in ${timerHuman} will be alerted of your message.`);
+      msgInput.value = '';
+      timeInput.value = '12:00';
     });
-    alert(`The future you in ${timerHuman} will be alerted of your message.`);
-    msgInput.value = '';
-    timeInput.value = '12:00';
-  });
 };
 
 const cancelScheduledNotification = (tag) => {
@@ -47,8 +49,7 @@ const cancelScheduledNotification = (tag) => {
 };
 
 function start() {
-  console.log('START');
-  navigator.permissions
+  return navigator.permissions
     .query({ name: 'notifications' })
     .then(({ state }) => {
       if (state === 'prompt') {
@@ -65,8 +66,7 @@ function start() {
       }
       // createScheduledNotification('001', 'BANANA', Date.now());
       permissionGranted();
-    })
-    .catch(console.warn);
+    });
 }
 
 function permissionGranted() {
