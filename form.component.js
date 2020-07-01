@@ -1,4 +1,4 @@
-class CreateForm {
+class CreateFormComponent {
   constructor() {
     this.setupTemplate();
   }
@@ -28,6 +28,8 @@ class CreateForm {
     this.submitEl.onclick = this.submit.bind(this);
   }
 
+  refresh() {}
+
   submit() {
     const msg = this.msgEl.value;
     const time = this.timeEl.value;
@@ -51,7 +53,7 @@ class CreateForm {
     return requestAccess()
       .then(() => navigator.serviceWorker.getRegistration())
       .then((registration) => {
-        registration.showNotification(`Message from ${timerHuman} ago`, {
+        registration.showNotification('Younger you', {
           tag: `${+now}_txt`,
           body: msg,
           showTrigger: new TimestampTrigger(+now + timer * 60000),

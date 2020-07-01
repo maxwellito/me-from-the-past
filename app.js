@@ -14,42 +14,28 @@ function requestAccess() {
         );
         throw new Error('Authorisation failed');
       }
-      permissionGranted();
     });
 }
 
-function permissionGranted() {
-  views.get('timeline').refreshHistoryList();
-}
-
-function switchView(viewName) {
-  const buttons = document.querySelectorAll('#menu button');
-  buttons.forEach((button) => {
-    button.className =
-      button.getAttribute('data-link') === viewName ? 'active' : '';
-  });
-
-  Array.from(views.keys()).forEach((key) => {
-    views.get(key).el.style.display = key === viewName ? 'inherit' : 'none';
-  });
-
-  permissionGranted();
-}
-
-const views = new Map();
 function main() {
-  const createView = new CreateForm();
-  const timelineView = new Timeline();
-  views.set('create', createView);
-  views.set('timeline', timelineView);
-
   const mainEl = document.getElementById('main');
-  mainEl.appendChild(createView.el);
-  mainEl.appendChild(timelineView.el);
-  mainEl.style.display = 'inherit';
+  const views = [
+    {
+      label: '+',
+      component: new CreateFormComponent(),
+    },
+    {
+      label: '=',
+      component: new TimelineComponent(),
+    },
+  ];
+  const navbar = new NavBarComponent(views);
 
-  switchView('create');
-  permissionGranted();
+  views.forEach((view) => {
+    mainEl.appendChild(view.component.el);
+  });
+  mainEl.appendChild(navbar.el);
+  mainEl.style.display = 'inherit';
 }
 
 if ('showTrigger' in Notification.prototype && 'serviceWorker' in navigator) {

@@ -1,4 +1,4 @@
-class Timeline {
+class TimelineComponent {
   constructor() {
     this.notifsEl = new Map();
     this.isOff = true;
@@ -41,15 +41,15 @@ class Timeline {
     div.classList.add('notif');
     div.innerHTML = `
       <span>${new Date(notif.showTrigger.timestamp)
-        .toISOString()
-        .substr(11, 5)}</span>
+        .toLocaleTimeString()
+        .substr(0, 5)}</span>
       <p>${notif.body}</p>
     `;
     this.notifsEl.set(notif.tag, div);
     return div;
   }
 
-  refreshHistoryList() {
+  refresh() {
     return navigator.serviceWorker
       .getRegistration()
       .then((registration) =>
