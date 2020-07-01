@@ -45,12 +45,9 @@ a {
   display: none;
 }
 .fullmsg {
-  font-size: 4rem;
+  font-size: 3rem;
   padding-top: 1em;
   margin: 0;
-}
-.fullmsg.gentle {
-  font-size: 3rem;
 }
 
 /* Components */
@@ -120,6 +117,9 @@ button {
 }
 
 /* Timeline view */
+.timeline {
+  padding-top: 1em;
+}
 .delimiter {
   border-bottom: none;
   border-left: none;
@@ -140,7 +140,7 @@ button {
   margin: 0.5em 0 0;
   font-size: 2rem;
 }
-.notif.inactive {
+.past-notifs .notif {
   box-sizing: border-box;
   color: #fff7;
   border: 2px solid #fff1;

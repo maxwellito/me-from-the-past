@@ -1,54 +1,4 @@
-const createScheduledNotification = () => {
-  const msgInput = document.getElementById('create-form-msg');
-  const timeInput = document.getElementById('create-form-time');
-  const msg = msgInput.value;
-  const time = timeInput.value;
-  const now = new Date();
-  const nowTime = now.getHours() * 60 + now.getMinutes();
-  const askTime =
-    parseInt(time.substr(0, 2)) * 60 + parseInt(time.substr(3, 2));
-  let timer;
-  if (nowTime < askTime) {
-    timer = askTime - nowTime;
-  } else {
-    timer = 24 * 60 - askTime + nowTime;
-  }
-  const timerHuman =
-    timer < 60 ? timer + ' minutes' : Math.floor(timer / 60) + ' hours';
-
-  if (!msg) {
-    return;
-  }
-
-  return start()
-    .then(() => navigator.serviceWorker.getRegistration())
-    .then((registration) => {
-      registration.showNotification(`Message from ${timerHuman} ago`, {
-        tag: `${+now}_txt`,
-        body: msg,
-        showTrigger: new TimestampTrigger(+now + timer * 60000),
-      });
-      alert(`The future you in ${timerHuman} will be alerted of your message.`);
-      msgInput.value = '';
-      timeInput.value = '12:00';
-    });
-};
-
-const cancelScheduledNotification = (tag) => {
-  return navigator.serviceWorker
-    .getRegistration()
-    .then((registration) =>
-      registration.getNotifications({
-        tag: tag,
-        includeTriggered: true,
-      })
-    )
-    .then((notifications) => {
-      notifications.forEach((notification) => notification.close());
-    });
-};
-
-function start() {
+function requestAccess() {
   return navigator.permissions
     .query({ name: 'notifications' })
     .then(({ state }) => {
@@ -64,70 +14,12 @@ function start() {
         );
         throw new Error('Authorisation failed');
       }
-      // createScheduledNotification('001', 'BANANA', Date.now());
       permissionGranted();
     });
 }
 
 function permissionGranted() {
-  // Refresh history list
-  refreshHistoryList();
-}
-
-function refreshHistoryList() {
-  return navigator.serviceWorker
-    .getRegistration()
-    .then((registration) =>
-      registration.getNotifications({ includeTriggered: true })
-    )
-    .then((notifications) => {
-      // Find notifs from the interval
-      const now = Date.now();
-      const nowMinus24h = now - 7 * 24 * 60 * 60 * 100;
-      const notifs = notifications
-        .filter((n) => n.showTrigger.timestamp > nowMinus24h)
-        .sort((a, b) => a.showTrigger.timestamp - b.showTrigger.timestamp);
-
-      // Split past and future
-      let firstFutureNotifIndex = notifs.findIndex(
-        (n) => n.showTrigger.timestamp > now
-      );
-      firstFutureNotifIndex =
-        firstFutureNotifIndex === -1
-          ? notifications.length
-          : firstFutureNotifIndex;
-      const pastNotifs = notifs.slice(0, firstFutureNotifIndex);
-      const futureNotifs = notifs.slice(firstFutureNotifIndex);
-
-      const limiter = document.createElement('fieldset');
-      limiter.classList.add('delimiter');
-      const legend = document.createElement('legend');
-      legend.innerText = 'Now';
-      limiter.appendChild(legend);
-
-      const view = document.querySelector('[data-view="timeline"]');
-      view.innerHTML = '';
-      [
-        ...pastNotifs.map(notifDom).map((x) => {
-          x.classList.add('inactive');
-          return x;
-        }),
-        limiter,
-        ...futureNotifs.map(notifDom),
-      ].forEach((dom) => view.appendChild(dom));
-    });
-}
-
-function notifDom(notif) {
-  const div = document.createElement('div');
-  div.classList.add('notif');
-  div.innerHTML = `
-    <span>${new Date(notif.showTrigger.timestamp)
-      .toISOString()
-      .substr(11, 5)}</span>
-    <p>${notif.body}</p>
-  `;
-  return div;
+  views.get('timeline').refreshHistoryList();
 }
 
 function switchView(viewName) {
@@ -137,17 +29,25 @@ function switchView(viewName) {
       button.getAttribute('data-link') === viewName ? 'active' : '';
   });
 
-  const views = document.querySelectorAll('[data-view]');
-  views.forEach((view) => {
-    view.style.display =
-      view.getAttribute('data-view') === viewName ? 'inherit' : 'none';
+  Array.from(views.keys()).forEach((key) => {
+    views.get(key).el.style.display = key === viewName ? 'inherit' : 'none';
   });
 
-  refreshHistoryList();
+  permissionGranted();
 }
 
+const views = new Map();
 function main() {
-  document.getElementById('main').style.display = 'inherit';
+  const createView = new CreateForm();
+  const timelineView = new Timeline();
+  views.set('create', createView);
+  views.set('timeline', timelineView);
+
+  const mainEl = document.getElementById('main');
+  mainEl.appendChild(createView.el);
+  mainEl.appendChild(timelineView.el);
+  mainEl.style.display = 'inherit';
+
   switchView('create');
   permissionGranted();
 }

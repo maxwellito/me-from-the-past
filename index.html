@@ -49,24 +49,6 @@
         <button onclick="switchView('create')" data-link="create">+</button>
         <button onclick="switchView('timeline')" data-link="timeline">=</button>
       </div>
-      <div data-view="create">
-        <div class="create-form">
-          <textarea
-            id="create-form-msg"
-            rows="1"
-            placeholder="Write your message.."
-            onkeydown="this.style.height = this.scrollHeight+'px';"
-            onchange="this.style.height = this.scrollHeight+'px';"
-          ></textarea>
-          <div class="create-form-submit">
-            <input id="create-form-time" type="time" value="12:00" />
-            <button onclick="createScheduledNotification()">+</button>
-          </div>
-        </div>
-      </div>
-      <div data-view="timeline">
-        <p class="fullmsg gentle">No scheduled messages, yet.</p>
-      </div>
     </div>
 
     <!-- SVG Icon definitions -->
@@ -93,6 +75,8 @@
       </symbol>
     </svg>
 
+    <script src="timeline.component.js"></script>
+    <script src="form.component.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
