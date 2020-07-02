@@ -41,7 +41,7 @@ class CreateFormComponent {
     if (nowTime < askTime) {
       timer = askTime - nowTime;
     } else {
-      timer = 24 * 60 - askTime + nowTime;
+      timer = 24 * 60 - nowTime + askTime;
     }
     const timerHuman =
       timer < 60 ? timer + ' minutes' : Math.floor(timer / 60) + ' hours';
@@ -57,6 +57,7 @@ class CreateFormComponent {
           tag: `${+now}_txt`,
           body: msg,
           showTrigger: new TimestampTrigger(+now + timer * 60000),
+          icon: './assets/icon_256.png',
         });
         alert(
           `The future you in ${timerHuman} will be alerted of your message.`

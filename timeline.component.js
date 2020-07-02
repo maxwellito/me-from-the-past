@@ -45,6 +45,10 @@ class TimelineComponent {
         .substr(0, 5)}</span>
       <p>${notif.body}</p>
     `;
+    div.addEventListener('dblclick', () => {
+      div.remove();
+      notif.close();
+    });
     this.notifsEl.set(notif.tag, div);
     return div;
   }

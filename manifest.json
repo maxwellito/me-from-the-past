@@ -1,9 +1,9 @@
 {
-  "name": "Me from the past",
-  "short_name": "MFTP",
+  "name": "From me to me",
+  "short_name": "FMTM",
   "icons": [
     {
-      "src": "./assets/icons/icon-256x256.png",
+      "src": "./assets/icon_256.png",
       "sizes": "256x256",
       "type": "image/png"
     }
