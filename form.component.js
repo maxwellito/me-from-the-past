@@ -53,11 +53,21 @@ class CreateFormComponent {
     return requestAccess()
       .then(() => navigator.serviceWorker.getRegistration())
       .then((registration) => {
-        registration.showNotification('Younger you', {
+        registration.showNotification('You', {
           tag: `${+now}_txt`,
           body: msg,
           showTrigger: new TimestampTrigger(+now + timer * 60000),
           icon: './assets/icon_256.png',
+          actions: [
+            {
+              action: 'kill',
+              title: 'GOTCHA!',
+            },
+            {
+              action: 'snooze',
+              title: 'SHUT UP!',
+            },
+          ],
         });
         alert(
           `The future you in ${timerHuman} will be alerted of your message.`
